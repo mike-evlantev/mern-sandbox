@@ -1,10 +1,11 @@
 import express from "express";
+import { add, getAll, getById, remove, update } from "../controllers/testController";
 const router = express.Router();
 
-router.get("/", (req, res) => res.json({ msg: "Get Test Objects" }));
-router.get("/:id", (req, res) => res.json({ msg: `Get Test Object ${req.params.id}` }));
-router.post("/", (req, res) => res.json({ msg: "Set Test Object" }));
-router.put("/:id", (req, res) => res.json({ msg: `Update Test Object ${req.params.id}` }));
-router.delete("/:id", (req, res) => res.json({ msg: `Delete Test Object ${req.params.id}` }));
+router.get("/", getAll);
+router.get("/:id", getById);
+router.post("/", add);
+router.put("/:id", update);
+router.delete("/:id", remove);
 
 export default router; 
