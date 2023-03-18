@@ -5,10 +5,10 @@ export const getAll = (req, res) => {
   res.status(200).json({ msg: "Get Test Objects" });
 }
 
-// @desc Get test object by id
+// @desc Get test object
 // @route GET /api/test/:id
 // @access PUBLIC
-export const getById = (req, res) => {
+export const get = (req, res) => {
   res.status(200).json({ msg: `Get Test Object ${req.params.id}` });
 }
 
@@ -19,14 +19,14 @@ export const add = (req, res) => {
   res.status(201).json({ msg: "Set Test Object" });
 }
 
-// @desc Get test object by id
+// @desc Update test object
 // @route PUT /api/test/:id
 // @access PRIVATE
 export const update = (req, res) => {
   res.status(200).json({ msg: `Update Test Object ${req.params.id}` });
 }
 
-// @desc Get test object by id
+// @desc Remove test object
 // @route DELETE /api/test/:id
 // @access PRIVATE
 export const remove = (req, res) => {
