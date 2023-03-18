@@ -1,0 +1,30 @@
+{
+  "name": "mern-sandbox",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.ts",
+  "scripts": {
+    "start": "node api/server.ts",
+    "server": "nodemon api/server.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mike-evlantev/mern-sandbox.git"
+  },
+  "author": "Mike Evlantev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mike-evlantev/mern-sandbox/issues"
+  },
+  "homepage": "https://github.com/mike-evlantev/mern-sandbox#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^7.0.2",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.21"
+  }
+}
