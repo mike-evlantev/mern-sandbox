@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
 export const errorHandler = (error: any, req: Request, res: Response, next: NextFunction) => {
-  console.log('res', res.statusCode);
   res
     .status(res.statusCode || 500)
     .json({ 
