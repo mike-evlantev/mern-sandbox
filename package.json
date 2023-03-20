@@ -5,7 +5,8 @@
   "main": "server.ts",
   "scripts": {
     "start": "node api/server.ts",
-    "server": "nodemon api/server.ts"
+    "server": "nodemon api/server.ts",
+    "client": "npm start --prefix client"
   },
   "repository": {
     "type": "git",
