@@ -4,7 +4,7 @@ import { OrderModel as Order } from "../models/order";
 
 // @desc Get all orders
 // @route GET /api/orders
-// @access PUBLIC
+// @access PRIVATE
 export const getAll = asyncHandler(async (req: Request, res: Response) => {
   const orders = await Order.find();
   res.status(200).json(orders);
@@ -12,18 +12,30 @@ export const getAll = asyncHandler(async (req: Request, res: Response) => {
 
 // @desc Get order by id
 // @route GET /api/orders/:id
-// @access PUBLIC
+// @access PRIVATE
 export const get = asyncHandler(async (req: Request, res: Response) => {
   const order = await Order.findById(req.params.id);
-  res.status(200).json(order);
+  
+  if (order) {
+    res.status(200).json(order);
+  } else {
+    res.status(400);
+    throw new Error('Order not found');
+  }
 });
 
 // @desc Create order
 // @route POST /api/orders
 // @access PRIVATE
 export const add = asyncHandler(async (req: Request, res: Response) => {
-  const order = await Order.create(req.body);  
-  res.status(201).json(order);
+  const order = await Order.create(req.body);
+
+  if (order) {
+    res.status(201).json(order);
+  } else {
+    res.status(400);
+    throw new Error('Order could not be created');
+  }
 });
 
 // @desc Update order
@@ -38,7 +50,12 @@ export const update = asyncHandler(async (req: Request, res: Response) => {
   }
   
   const updated = await Order.findByIdAndUpdate(req.params.id, req.body, { new: true });
-  res.status(200).json(updated);
+  if (updated) {
+    res.status(200).json(updated);
+  } else {
+    res.status(400);
+    throw new Error('Order could not be updated');
+  }  
 });
 
 // @desc Remove order
@@ -53,5 +70,10 @@ export const remove = asyncHandler(async (req: Request, res: Response) => {
   }
 
   const removed = await Order.findByIdAndRemove(req.params.id);
-  res.status(200).json(removed);
+  if (removed) {
+    res.status(200).json(removed);
+  } else {
+    res.status(400);
+    throw new Error('User could not be removed');
+  }  
 });
