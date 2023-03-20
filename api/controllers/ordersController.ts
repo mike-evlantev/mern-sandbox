@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
+import { AuthorizedRequest } from "../middleware/auth";
 import { OrderModel as Order } from "../models/order";
+import { UserModel as User } from "../models/user";
 
 // @desc Get all orders
 // @route GET /api/orders
@@ -14,8 +16,7 @@ export const getAll = asyncHandler(async (req: Request, res: Response) => {
 // @route GET /api/orders/:id
 // @access PRIVATE
 export const get = asyncHandler(async (req: Request, res: Response) => {
-  const order = await Order.findById(req.params.id);
-  
+  const order = await Order.findById(req.params.id);  
   if (order) {
     res.status(200).json(order);
   } else {
@@ -28,8 +29,8 @@ export const get = asyncHandler(async (req: Request, res: Response) => {
 // @route POST /api/orders
 // @access PRIVATE
 export const add = asyncHandler(async (req: Request, res: Response) => {
-  const order = await Order.create(req.body);
-
+  const model = {...req.body, userId: (req as AuthorizedRequest).token.id}
+  const order = await Order.create(model);
   if (order) {
     res.status(201).json(order);
   } else {
@@ -42,11 +43,22 @@ export const add = asyncHandler(async (req: Request, res: Response) => {
 // @route PUT /api/orders/:id
 // @access PRIVATE
 export const update = asyncHandler(async (req: Request, res: Response) => {
-  const order = await Order.findById(req.params.id);
-  
+  const order = await Order.findById(req.params.id);  
   if (!order) {
     res.status(400);
     throw new Error('Order not found');
+  }
+
+  // verify owner of order
+  const user = await User.findById((req as AuthorizedRequest).token.id);
+  if (!user) {
+    res.status(401);
+    throw new Error('User not found');
+  }
+
+  if (order.userId.toString() !== user.id) {
+    res.status(401);
+    throw new Error('User not authorized');
   }
   
   const updated = await Order.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -62,11 +74,22 @@ export const update = asyncHandler(async (req: Request, res: Response) => {
 // @route DELETE /api/orders/:id
 // @access PRIVATE
 export const remove = asyncHandler(async (req: Request, res: Response) => {
-  const order = await Order.findById(req.params.id);
-  
+  const order = await Order.findById(req.params.id);  
   if (!order) {
     res.status(400);
     throw new Error('Order not found');
+  }
+
+  // verify owner of order
+  const user = await User.findById((req as AuthorizedRequest).token.id);
+  if (!user) {
+    res.status(401);
+    throw new Error('User not found');
+  }
+
+  if (order.userId.toString() !== user.id) {
+    res.status(401);
+    throw new Error('User not authorized');
   }
 
   const removed = await Order.findByIdAndRemove(req.params.id);

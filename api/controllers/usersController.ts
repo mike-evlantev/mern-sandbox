@@ -24,8 +24,7 @@ export const get = asyncHandler(async (req: Request, res: Response) => {
 // @route GET /api/users/current
 // @access PRIVATE
 export const current = asyncHandler(async (req: Request, res: Response) => {
-  const user = await User.findById((req as AuthorizedRequest).token.id);
-
+  const user = await User.findById((req as AuthorizedRequest).token.id).select('-password');
   if (user) {
     res.status(200).json({
       id: user.id,
@@ -43,15 +42,13 @@ export const current = asyncHandler(async (req: Request, res: Response) => {
 // @route POST /api/users/login
 // @access PUBLIC
 export const login = asyncHandler(async (req: Request, res: Response) => {
-  const { email, password } = req.body;
-  
+  const { email, password } = req.body;  
   if (!email || !password) {
     res.status(400);
     throw new Error('Email and password required');
   }
   
   const user = await User.findOne({ email });
-
   if (user && (await user.matchPassword(password))) {
     res.json({
       id: user.id,
@@ -72,7 +69,6 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
 // @access PRIVATE
 export const add = asyncHandler(async (req: Request, res: Response) => {
   const { email, first, last, password } = req.body;
-
   if (!email || !first || !last || !password) {
     res.status(400);
     throw new Error('All fields required');
@@ -104,8 +100,7 @@ export const add = asyncHandler(async (req: Request, res: Response) => {
 // @route PUT /api/users/:id
 // @access PRIVATE
 export const update = asyncHandler(async (req: Request, res: Response) => {
-  const user = await User.findById(req.params.id);
-  
+  const user = await User.findById(req.params.id);  
   if (!user) {
     res.status(400);
     throw new Error('User not found');
@@ -129,8 +124,7 @@ export const update = asyncHandler(async (req: Request, res: Response) => {
 // @route DELETE /api/users/:id
 // @access PRIVATE
 export const remove = asyncHandler(async (req: Request, res: Response) => {
-  const user = await User.findById(req.params.id);
-  
+  const user = await User.findById(req.params.id);  
   if (!user) {
     res.status(400);
     throw new Error('User not found');
