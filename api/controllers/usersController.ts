@@ -42,7 +42,7 @@ export const current = asyncHandler(async (req: Request, res: Response) => {
 // @route POST /api/users/login
 // @access PUBLIC
 export const login = asyncHandler(async (req: Request, res: Response) => {
-  const { email, password } = req.body;  
+  const { email, password } = req.body;
   if (!email || !password) {
     res.status(400);
     throw new Error('Email and password required');
