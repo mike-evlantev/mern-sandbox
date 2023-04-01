@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = '/api/users';
+const API_URL = `${process.env.REACT_APP_API_DOMAIN}/api/users`;
 
 const register = async ({ email, password, first, last }: { email: string, password: string, first: string, last: string }) => {
   const config = {
