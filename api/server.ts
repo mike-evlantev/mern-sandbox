@@ -4,7 +4,7 @@ import { connectMongoDb } from "./config/mongodb";
 import { errorHandler } from "./middleware/error";
 import orders from "./routes/orders";
 import users from "./routes/users";
-import path from "node:path";
+import * as path from "path";
 require('dotenv').config();
 
 connectMongoDb();
