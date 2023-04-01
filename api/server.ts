@@ -1,10 +1,10 @@
-import path from "path";
 import express from "express";
 import cors from "cors";
 import { connectMongoDb } from "./config/mongodb";
 import { errorHandler } from "./middleware/error";
 import orders from "./routes/orders";
 import users from "./routes/users";
+import path from "node:path";
 require('dotenv').config();
 
 connectMongoDb();
