@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { Spinner } from "../components/Spinner";
@@ -8,6 +8,7 @@ import { login } from "../features/auth/authSlice";
 export const Login: React.FC = () => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { user, loading, success, error } = useAppSelector((state) => state.auth);
@@ -18,9 +19,9 @@ export const Login: React.FC = () => {
     }
 
     if (success || user) {
-      navigate('/');
+      navigate(location.state.from.pathname);
     }    
-  }, [user, success, error, navigate]);
+  }, [user, success, error, navigate, location.state.from.pathname]);
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -33,8 +34,7 @@ export const Login: React.FC = () => {
   }
 
   const handleLogin = () => {
-    dispatch(login({ email, password }));
-    
+    dispatch(login({ email, password }));    
   }
 
   return (
