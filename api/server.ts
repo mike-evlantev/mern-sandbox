@@ -1,13 +1,19 @@
-import * as path from 'path';
-import express from 'express';
-import cors from 'cors';
-import { connectMongoDb } from './config/mongodb';
-import { errorHandler } from './middleware/error';
-import orders from './routes/orders';
-import users from './routes/users';
-import dotenv from 'dotenv';
-
-dotenv.config();
+// import * as path from 'path';
+// import express from 'express';
+// import cors from 'cors';
+// import { connectMongoDb } from './config/mongodb';
+// import { errorHandler } from './middleware/error';
+// import orders from './routes/orders';
+// import users from './routes/users';
+// import dotenv from 'dotenv';
+const express = require('express');
+const cors = require('cors');
+const path = require('path');
+require('dotenv').config();
+const { connectMongoDb } = require('./config/mongodb');
+const { errorHandler } = require('./middleware/error');
+const orders = require('./routes/orders');
+const users = require('./routes/users');
 
 connectMongoDb();
 
