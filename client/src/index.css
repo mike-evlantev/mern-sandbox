@@ -18,3 +18,12 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.dev {
+  opacity: 0.5;
+  background-color: whitesmoke;
+}
+
+.dev:hover {
+  opacity: unset;
+}
