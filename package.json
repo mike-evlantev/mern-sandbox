@@ -9,7 +9,8 @@
     "server": "nodemon api/server.ts",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "render-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+    "render-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
+    "rimraf": "./node_modules/rimraf/bin.js"
   },
   "repository": {
     "type": "git",
