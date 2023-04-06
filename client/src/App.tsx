@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation, Navigate, Outlet }
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { useAppSelector } from "./app/hooks";
+import { Dev } from "./components/Dev";
 import { Nav } from "./components/Nav";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
@@ -27,6 +28,7 @@ function RequireAuth({ children }: { children: JSX.Element }) {
 function Layout() {
   return (
     <div>
+      <Dev>This is a DEV message</Dev>
       {/* A "layout route" is a good place to put markup you want to
           share across all the pages on your site, like navigation. */}
       <Nav />
