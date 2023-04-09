@@ -6,6 +6,7 @@ import { Nav } from "./components/Nav";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
 import { Orders } from "./pages/Orders";
+import { Gallery } from "./pages/Gallery";
 
 // Based on https://github.com/remix-run/react-router/tree/dev/examples
 
@@ -49,6 +50,7 @@ function App() {
             <Route path="/" element={<RequireAuth><Layout /></RequireAuth>}>
               <Route index element={<RequireAuth><Home /></RequireAuth> } />
               <Route path="orders" element={<RequireAuth><Orders /></RequireAuth>} />              
+              <Route path="gallery" element={<RequireAuth><Gallery /></RequireAuth>} />              
               <Route path='*' element={<>Page Not Found</>} />
             </Route>
           </Routes>

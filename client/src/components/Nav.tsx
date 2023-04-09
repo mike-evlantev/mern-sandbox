@@ -22,6 +22,10 @@ export const Nav: React.FC = () => {
               {/* <a className="nav-link" href="#">Features</a> */}
               <Link to="/orders" className="nav-link">Orders</Link>
             </li>
+            <li className="nav-item">
+              {/* <a className="nav-link" href="#">Features</a> */}
+              <Link to="/gallery" className="nav-link">Gallery</Link>
+            </li>
             {/* <li className="dropdown">
               <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Dropdown link
