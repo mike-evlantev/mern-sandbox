@@ -1,22 +1,23 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { useAppSelector } from "../app/hooks";
 
 export interface CarouselItem {
     index: number;
+    title: string;
     src: string;
     alt: string;
+    price: number;
 }
 
-interface Props {
-    items: CarouselItem[];
-}
-
-export const Carousel: React.FC<Props> = ({items}) => {
+export const Carousel: React.FC = () => {
     const carouselId = 'carouselExampleIndicators';
     const [index, setIndex] = React.useState(0);
+    const {compositions} = useAppSelector(state => state.gallery);
 
     const handlePrevious = () => {
         if(index === 0) {
-            setIndex(items.length - 1);
+            setIndex(compositions.length - 1);
             return;
         }
 
@@ -24,7 +25,7 @@ export const Carousel: React.FC<Props> = ({items}) => {
     }
 
     const handleNext = () => {
-        if(index === items.length - 1) {
+        if(index === compositions.length - 1) {
             setIndex(0);
             return;
         }
@@ -39,7 +40,7 @@ export const Carousel: React.FC<Props> = ({items}) => {
     return(
         <div id={carouselId} className="carousel carousel-dark slide bg-light" data-bs-ride="carousel">
             <div className="carousel-indicators">
-                {items.map(i =>
+                {compositions.map(i =>
                     <button
                         key={`carousel-indicator-${i.index}`}
                         type="button" 
@@ -53,9 +54,13 @@ export const Carousel: React.FC<Props> = ({items}) => {
                 )}
             </div>
             <div className="carousel-inner">
-                {items.map(i =>
+                {compositions.map(i =>
                     <div key={`carousel-item-${i.index}`} className={`carousel-item mt-5 ${getClassName(i.index)}`}>
                         <img className="d-block w-50 ms-auto me-auto" src={i.src} alt={i.alt} />
+                        <div className="carousel-caption d-none d-md-block">
+                            <h5>{i.title}</h5>
+                            <Link to={`/gallery/${i.index}`} className="nav-link">Get this in 4 - 6 weeks</Link>
+                        </div>
                     </div>                    
                 )}
             </div>

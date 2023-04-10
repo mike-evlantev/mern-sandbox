@@ -1,26 +1,8 @@
 import React from "react";
-import { Carousel, CarouselItem } from "../components/Carousel";
+import { Carousel } from "../components/Carousel";
+import { Outlet } from "react-router-dom";
 
-export const Gallery: React.FC = () => {   
-
-    const items: CarouselItem[] = [
-        {
-            index: 0,
-            src: 'https://cdn.shopify.com/s/files/1/0941/7736/products/La-Ligne-Natural_21_25x21_25.jpg?v=1669842516',
-            alt: 'La-Ligne-Natural'
-        },
-        {
-            index: 1,
-            src: 'https://cdn.shopify.com/s/files/1/0941/7736/products/La-Ligne-Brut-Noir_21_25x21_25-Primary.jpg?v=1669841607',
-            alt: 'La-Ligne-Brut-Noir'
-        },
-        {
-            index: 2,
-            src: 'https://cdn.shopify.com/s/files/1/0941/7736/products/Untitled-_totem_-cream__18x24-Primary.jpg?v=1640031270',
-            alt: 'Untitled-_totem_-cream'
-        }
-    ];
-    
+export const Gallery: React.FC = () => {       
     return (
         <>
             <div style={{position: 'absolute', zIndex: 10, left: '50%', transform: 'translate(-50%)'}}>
@@ -31,8 +13,9 @@ export const Gallery: React.FC = () => {
                 </div>
             </div>
             <div style={{position: 'relative'}}>
-                <Carousel items={items} />
-            </div>            
+                <Carousel />
+            </div>
+            <Outlet />          
         </>        
     );
 }
