@@ -6,15 +6,20 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.css';
 import './index.css';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY ?? "");
 
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <Elements stripe={stripePromise}>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </Elements>    
   </React.StrictMode>
 );
 
