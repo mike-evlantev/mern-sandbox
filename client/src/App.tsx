@@ -8,6 +8,7 @@ import { Login } from "./pages/Login";
 import { Orders } from "./pages/Orders";
 import { Carousel } from "./components/Carousel";
 import { Composition } from "./pages/Composition";
+import { Checkout } from "./pages/Checkout";
 
 // Based on https://github.com/remix-run/react-router/tree/dev/examples
 
@@ -72,7 +73,7 @@ function App() {
               <Route path="orders" element={<RequireAuth><Orders /></RequireAuth>} />              
               <Route path="gallery" element={<RequireAuth><GalleryLayout /></RequireAuth>}>
                 <Route index path="" element={<RequireAuth><Carousel /></RequireAuth>} />
-                <Route path='checkout' element={<RequireAuth><>Checkout</></RequireAuth>} />
+                <Route path='checkout' element={<RequireAuth><Checkout /></RequireAuth>} />
                 <Route path=":id" element={<RequireAuth><Composition /></RequireAuth>} />
                 
               </Route>              
