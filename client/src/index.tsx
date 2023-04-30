@@ -11,15 +11,12 @@ import { Elements } from '@stripe/react-stripe-js';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY ?? "");
 
 root.render(
   <React.StrictMode>
-    <Elements stripe={stripePromise}>
       <Provider store={store}>
         <App />
       </Provider>
-    </Elements>    
   </React.StrictMode>
 );
 
