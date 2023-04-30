@@ -4,6 +4,7 @@ import cors from 'cors';
 import { connectMongoDb } from './config/mongodb';
 import { errorHandler } from './middleware/error';
 import orders from './routes/orders';
+import stripe from './routes/stripe';
 import users from './routes/users';
 import dotenv from 'dotenv';
 
@@ -24,6 +25,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use('/api/orders', orders);
 app.use('/api/users', users);
+app.use('/api/payments', stripe);
 
 app.use(errorHandler);
 
@@ -34,9 +36,8 @@ if (process.env.NODE_ENV === 'production') {
  
    // when home page route is hit load index.html
    app.get('/', (req, res) =>
-     //res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
      res.sendFile(path.join(__dirname, '../../client/build'))
-   ); // look in currentDirectory/client/build/index.html
+   ); // look in /client/build/index.html
 }
 
 const port = process.env.PORT || 5000;
