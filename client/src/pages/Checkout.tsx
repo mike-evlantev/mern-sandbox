@@ -1,10 +1,23 @@
-import { LinkAuthenticationElement, PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import { Elements, LinkAuthenticationElement, PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { Layout } from "@stripe/stripe-js";
 import React from "react";
+import { stripeService } from "../features/stripe/stripeService";
 
 export const Checkout: React.FC = () => {
-    const stripe = useStripe();
-    const elements = useElements();
+    // const stripe = useStripe();
+    // const elements = useElements();
+    const [stripePromise, setStripePromise] = React.useState();
+    const [clientSecret, setClientSecret] = React.useState();
+
+    React.useEffect(() => {
+        async function config() {
+            const data = await stripeService.config();
+            console.log('key', data);
+        }
+        config();
+    }, []);
+
+    React.useEffect(() => {}, []);
 
     const [email, setEmail] = React.useState('');
     const [message, setMessage] = React.useState(null);
@@ -19,21 +32,21 @@ export const Checkout: React.FC = () => {
     }
 
     return(
-        <>
+        <Elements stripe={stripePromise || null} options={{clientSecret}}>
             <form id="payment-form" onSubmit={handleSubmit}>
                 {/* <LinkAuthenticationElement
                     id="link-authentication-element"
                     onChange={(e) => setEmail(e.value.email)}
                 /> */}
-                <PaymentElement id="payment-element" options={paymentElementOptions} />
-                <button disabled={isLoading || !stripe || !elements} id="submit">
+                {/* <PaymentElement id="payment-element" options={paymentElementOptions} /> */}
+                <button disabled={isLoading} id="submit">
                     <span id="button-text">
-                    {isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"}
+                    {/* {isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"} */}
                     </span>
                 </button>
                 {/* Show any error or success messages */}
                 {message && <div id="payment-message">{message}</div>}
             </form>
-        </>
+        </Elements>
     );
 }
