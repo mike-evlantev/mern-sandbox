@@ -15,4 +15,16 @@ const config = async () => {
     return data;
 }
 
-export const stripeService = { config };
+const createPaymentIntent = async () => {
+    const config = {
+        headers: {
+            "Content-Type": "application/json",
+            "X-Auth-Token": JSON.parse(localStorage.getItem('user') as string)?.token
+        },
+    };
+
+    const { data } = await axios.post(`${API_URL}/createPaymentIntent`, {amount: 100}, config);
+    return data;
+} 
+
+export const stripeService = { config, createPaymentIntent };
