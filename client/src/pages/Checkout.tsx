@@ -1,52 +1,33 @@
-import { Elements, LinkAuthenticationElement, PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
-import { Layout } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import { Stripe, loadStripe } from "@stripe/stripe-js";
 import React from "react";
 import { stripeService } from "../features/stripe/stripeService";
+import { CheckoutForm } from "../components/CheckoutForm";
 
 export const Checkout: React.FC = () => {
-    // const stripe = useStripe();
-    // const elements = useElements();
-    const [stripePromise, setStripePromise] = React.useState();
+    const [stripePromise, setStripePromise] = React.useState<Promise<Stripe | null>>();
     const [clientSecret, setClientSecret] = React.useState();
 
     React.useEffect(() => {
         async function config() {
-            const data = await stripeService.config();
-            console.log('key', data);
+            const { publishableKey } = await stripeService.config();
+            setStripePromise(loadStripe(publishableKey));
         }
         config();
     }, []);
 
-    React.useEffect(() => {}, []);
+    React.useEffect(() => {
+        async function intent() {            
+            const clientSecret = await stripeService.createPaymentIntent();
+            setClientSecret(clientSecret);
+        }
+        intent();
+    }, []);    
 
-    const [email, setEmail] = React.useState('');
-    const [message, setMessage] = React.useState(null);
-    const [isLoading, setIsLoading] = React.useState(false);
-    
-    const handleSubmit = () => {
-        console.log('clicked handle submit');
-    }
-
-    const paymentElementOptions = {
-        layout: 'tabs' as Layout
-    }
-
-    return(
-        <Elements stripe={stripePromise || null} options={{clientSecret}}>
-            <form id="payment-form" onSubmit={handleSubmit}>
-                {/* <LinkAuthenticationElement
-                    id="link-authentication-element"
-                    onChange={(e) => setEmail(e.value.email)}
-                /> */}
-                {/* <PaymentElement id="payment-element" options={paymentElementOptions} /> */}
-                <button disabled={isLoading} id="submit">
-                    <span id="button-text">
-                    {/* {isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"} */}
-                    </span>
-                </button>
-                {/* Show any error or success messages */}
-                {message && <div id="payment-message">{message}</div>}
-            </form>
-        </Elements>
-    );
+    return(<>
+        {clientSecret && 
+            <Elements stripe={stripePromise || null} options={{clientSecret}}>
+                <CheckoutForm />
+            </Elements>}
+    </>);
 }
