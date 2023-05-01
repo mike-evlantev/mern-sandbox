@@ -1,6 +1,7 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import counterReducer from '../features/counter/counterSlice';
 import authReducer from '../features/auth/authSlice';
+import cartReducer from '../features/gallery/cartSlice';
 import galleryReducer from '../features/gallery/gallerySlice';
 
 export const store = configureStore({
@@ -8,6 +9,7 @@ export const store = configureStore({
     auth: authReducer,
     counter: counterReducer,
     gallery: galleryReducer,
+    cart: cartReducer
   },
 });
 
