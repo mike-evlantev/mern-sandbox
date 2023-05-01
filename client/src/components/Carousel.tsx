@@ -5,15 +5,31 @@ import { useAppSelector } from "../app/hooks";
 export interface CarouselItem {
     index: number;
     title: string;
+    description: string;
+    material: string;
     src: string;
     alt: string;
     price: number;
+    width: number;
+    height: number;
+    year: number;
 }
 
-export const Carousel: React.FC = () => {
-    const carouselId = 'carouselExampleIndicators';
+export const CarouselContainer = () => {
     const [index, setIndex] = React.useState(0);
     const {compositions} = useAppSelector(state => state.gallery);
+
+    return(<>
+        <Carousel compositions={compositions} index={index} setIndex={setIndex} />
+        <div className="d-flex mt-2">
+            <h5>{compositions[index].title}</h5>
+            <Link to={`/gallery/${index}`} className="nav-link ms-auto">Get this in 4 - 6 weeks</Link>
+        </div>
+    </>);
+}
+
+export const Carousel: React.FC<{compositions: CarouselItem[], index: number, setIndex: React.Dispatch<React.SetStateAction<number>> }> = ({compositions, index, setIndex}) => {
+    const carouselId = 'carouselExampleIndicators';
 
     const handlePrevious = () => {
         if(index === 0) {
@@ -57,10 +73,10 @@ export const Carousel: React.FC = () => {
                 {compositions.map(i =>
                     <div key={`carousel-item-${i.index}`} className={`carousel-item mt-5 ${getClassName(i.index)}`}>
                         <img className="d-block w-50 ms-auto me-auto" src={i.src} alt={i.alt} />
-                        <div className="carousel-caption d-none d-md-block">
+                        {/* <div className="carousel-caption d-none d-md-block">
                             <h5>{i.title}</h5>
                             <Link to={`/gallery/${i.index}`} className="nav-link">Get this in 4 - 6 weeks</Link>
-                        </div>
+                        </div> */}
                     </div>                    
                 )}
             </div>

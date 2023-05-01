@@ -1,5 +1,5 @@
 import React from "react";
-import { Carousel } from "../components/Carousel";
+import { CarouselContainer } from "../components/Carousel";
 import { Outlet } from "react-router-dom";
 
 export const Gallery: React.FC = () => {       
@@ -13,7 +13,7 @@ export const Gallery: React.FC = () => {
                 </div>
             </div>
             <div style={{position: 'relative'}}>
-                <Carousel />
+                <CarouselContainer />
             </div>
             <Outlet />          
         </>        

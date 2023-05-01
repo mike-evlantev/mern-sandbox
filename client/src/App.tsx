@@ -6,9 +6,10 @@ import { Nav } from "./components/Nav";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
 import { Orders } from "./pages/Orders";
-import { Carousel } from "./components/Carousel";
+import { CarouselContainer } from "./components/Carousel";
 import { Composition } from "./pages/Composition";
 import { Checkout } from "./pages/Checkout";
+import { Confirmation } from "./components/Confirmation";
 
 // Based on https://github.com/remix-run/react-router/tree/dev/examples
 
@@ -60,7 +61,7 @@ function GalleryLayout() {
     </div>
   );
 }
-
+///:payment_intent_client_secret/:redirect_status
 function App() {
   return (
     <>
@@ -72,10 +73,10 @@ function App() {
               <Route index element={<RequireAuth><Home /></RequireAuth> } />
               <Route path="orders" element={<RequireAuth><Orders /></RequireAuth>} />              
               <Route path="gallery" element={<RequireAuth><GalleryLayout /></RequireAuth>}>
-                <Route index path="" element={<RequireAuth><Carousel /></RequireAuth>} />
+                <Route index path="" element={<RequireAuth><CarouselContainer /></RequireAuth>} />
                 <Route path='checkout' element={<RequireAuth><Checkout /></RequireAuth>} />
-                <Route path=":id" element={<RequireAuth><Composition /></RequireAuth>} />
-                
+                <Route path='confirmation' element={<RequireAuth><Confirmation /></RequireAuth>} />
+                <Route path=":id" element={<RequireAuth><Composition /></RequireAuth>} />                
               </Route>              
               <Route path='*' element={<>Page Not Found</>} />
             </Route>
