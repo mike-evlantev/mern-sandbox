@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { add } from "../features/gallery/cartSlice";
+import { addItem } from "../features/gallery/orderSlice";
 
 export const Composition: React.FC = () => {
     const {id} = useParams();
@@ -10,7 +10,7 @@ export const Composition: React.FC = () => {
     const composition = compositions.find(c => c.index.toString() === id);
 
     const handlePurchase = () => {
-        dispatch(add(composition?.index!));
+        dispatch(addItem(composition?.index!));
         navigate('/gallery/checkout');
     }
 

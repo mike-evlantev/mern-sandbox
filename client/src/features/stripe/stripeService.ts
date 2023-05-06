@@ -15,7 +15,7 @@ const config = async () => {
     return data;
 }
 
-const createPaymentIntent = async () => {
+const createPaymentIntent = async (amount: number) => {
     const config = {
         headers: {
             "Content-Type": "application/json",
@@ -23,7 +23,7 @@ const createPaymentIntent = async () => {
         },
     };
 
-    const { data } = await axios.post(`${API_URL}/createPaymentIntent`, {amount: 100}, config);
+    const { data } = await axios.post(`${API_URL}/createPaymentIntent`, {amount}, config);
     return data;
 } 
 

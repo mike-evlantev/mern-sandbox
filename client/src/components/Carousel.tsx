@@ -25,6 +25,24 @@ export const CarouselContainer = () => {
             <h5>{compositions[index].title}</h5>
             <Link to={`/gallery/${index}`} className="nav-link ms-auto">Get this in 4 - 6 weeks</Link>
         </div>
+        <div className="row mt-5">
+            {compositions?.length > 0 
+                ? compositions.map(({index, src, alt, title, material, price}) => (
+                    <div className="col col-sm-12 col-md-6 col-lg-4 col-xl-3" key={index}>
+                        <Link to={`/gallery/${index}`} className="nav-link ms-auto">
+                            <div className="card">
+                                <img src={src} className="card-img-top" alt={alt} />
+                                <div className="card-body">
+                                    <h5 className="card-title">{title}</h5>
+                                    <p className="card-text">{material}</p>
+                                    <span>{price}</span>
+                                </div>
+                            </div>
+                        </Link>
+                    </div>
+                )) 
+                : <span>No products found</span>}
+        </div>
     </>);
 }
 

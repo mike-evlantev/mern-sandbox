@@ -6,6 +6,7 @@ import { errorHandler } from './middleware/error';
 import orders from './routes/orders';
 import stripe from './routes/stripe';
 import users from './routes/users';
+import gallery from './routes/galleryOrders';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -25,6 +26,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use('/api/orders', orders);
 app.use('/api/users', users);
+app.use('/api/gallery', gallery);
 app.use('/api/payments', stripe);
 
 app.use(errorHandler);

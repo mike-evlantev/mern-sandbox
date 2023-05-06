@@ -1,17 +1,108 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { CarouselItem } from '../../components/Carousel';
-import { orderService } from './orderService';
-import { narrowError } from '../../utils/errorUtils';
-import { GalleryOrder } from '../../types/GalleryOrder';
+import { Request, Response } from "express";
+import asyncHandler from "express-async-handler";
+import { GalleryOrderModel as Order } from "../models/galleryOrder";
 
-interface GalleryState {
-    loading: boolean;
-    error: string;
-    compositions: CarouselItem[];
-    orders: GalleryOrder[];
+// @desc Get all orders
+// @route GET /api/orders
+// @access PRIVATE
+export const getAll = asyncHandler(async (req: Request, res: Response) => {
+    const orders = await Order.find();
+    res.status(200).json(orders);
+});
+
+// @desc Get order by id
+// @route GET /api/orders/:id
+// @access PRIVATE
+export const get = asyncHandler(async (req: Request, res: Response) => {
+    const order = await Order.findById(req.params.id);  
+    if (order) {
+        res.status(200).json(order);
+    } else {
+        res.status(400);
+        throw new Error('Order not found');
+    }
+});
+
+// @desc Create order
+// @route POST /api/orders
+// @access PRIVATE
+export const add = asyncHandler(async (req: Request, res: Response) => {
+    //const model = {...req.body, userId: (req as AuthorizedRequest).token.id}
+    const total = compositions
+        .filter(c => req.body.items.some((i: number)  => c.index === i))
+        .reduce((a, b) => a + b.price, 0);
+    const order = await Order.create({...req.body, total});
+    if (order) {
+        res.status(201).json(order);
+    } else {
+        res.status(400);
+        throw new Error('Order could not be created');
+    }
+});
+
+// @desc Update order
+// @route PUT /api/orders/:id
+// @access PRIVATE
+export const update = asyncHandler(async (req: Request, res: Response) => {
+const order = await Order.findById(req.params.id);  
+if (!order) {
+    res.status(400);
+    throw new Error('Order not found');
 }
 
-const compositions: CarouselItem[] = [
+// verify owner of order
+// const user = await User.findById((req as AuthorizedRequest).token.id);
+// if (!user) {
+//     res.status(401);
+//     throw new Error('User not found');
+// }
+
+// if (order.userId.toString() !== user.id) {
+//     res.status(401);
+//     throw new Error('User not authorized');
+// }
+
+const updated = await Order.findByIdAndUpdate(req.params.id, req.body, { new: true });
+if (updated) {
+    res.status(200).json(updated);
+} else {
+    res.status(400);
+    throw new Error('Order could not be updated');
+}  
+});
+
+// @desc Remove order
+// @route DELETE /api/orders/:id
+// @access PRIVATE
+export const remove = asyncHandler(async (req: Request, res: Response) => {
+    const order = await Order.findById(req.params.id);  
+    if (!order) {
+        res.status(400);
+        throw new Error('Order not found');
+    }
+
+    // verify owner of order
+    // const user = await User.findById((req as AuthorizedRequest).token.id);
+    // if (!user) {
+    //     res.status(401);
+    //     throw new Error('User not found');
+    // }
+
+    // if (order.userId.toString() !== user.id) {
+    //     res.status(401);
+    //     throw new Error('User not authorized');
+    // }
+
+    const removed = await Order.findByIdAndRemove(req.params.id);
+    if (removed) {
+        res.status(200).json(removed);
+    } else {
+        res.status(400);
+        throw new Error('User could not be removed');
+    }  
+});
+
+const compositions = [
     {
         index: 0,
         title: 'La Ligne Natural',
@@ -61,44 +152,3 @@ const compositions: CarouselItem[] = [
         height: 21
     }
 ];
-
-const initialState: GalleryState = {
-    loading: false,
-    error: '',
-    compositions,
-    orders: []
-}
-
-// Get orders
-export const getOrders = createAsyncThunk(
-    "order/getOrders",
-    async (_, thunkAPI) => {
-        try {
-            const orders = await orderService.getOrders(thunkAPI.dispatch);
-            if (orders && orders.length > 0) { orders.sort((a, b) => new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf()); }
-            return orders;
-        } catch (error) {
-            const message = narrowError(error);
-            // thunkAPI.dispatch(alert({text: message, type: "danger"}));
-            return thunkAPI.rejectWithValue(message);
-        }
-    }
-);
-
-export const gallerySlice = createSlice({
-    name: 'gallery',
-    initialState,
-    reducers: {},
-    extraReducers: (builder) => {
-        builder
-            .addCase(getOrders.pending, (state) => { state.loading = true })
-            .addCase(getOrders.fulfilled, (state, action: PayloadAction<GalleryOrder[] | undefined>) => {
-                return {...state, loading: false, success: true, orders: action.payload || []};
-            })
-            .addCase(getOrders.rejected, (state, action) => {
-                return {...state, loading: false, success: false, error: narrowError(action.payload)};
-            })
-    }
-});
-
-export default gallerySlice.reducer;
